@@ -1,0 +1,24 @@
+name: Auto Commit
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # runs every day at 12PM UTC
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # allows pushing to repo
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Make a commit
+        run: |
+          echo "Active: $(date)" >> log.txt
+          git config user.email "your@email.com"
+          git config user.name "YourUsername"
+          git add .
+          git commit -m "daily update $(date)"
+          git push
